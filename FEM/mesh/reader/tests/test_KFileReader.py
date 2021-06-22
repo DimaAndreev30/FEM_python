@@ -20,3 +20,11 @@ class TestKFileReader:
 
         second_element = result['cells'][1]
         assert second_element == [5, 6, 7, 4], "incorrect split result"
+
+    def test_regularRead(self):
+        reader = KFileReader()
+
+        try:
+            reader.readstream(open('doc/meshes/test.k'))
+        except TypeError:
+            assert False, "catch an exception during reading"

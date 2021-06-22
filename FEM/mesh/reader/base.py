@@ -119,5 +119,5 @@ class StreamReaderBase:
     def _apply(self, line):
         pass
     def _end_reader(self, line):
-        raise ValueError("Unable to read the following line: input data has already reached the end; Try to collect the output data and use the reset function")
+        raise TypeError("Unable to read the following line: input data has already reached the end; Try to collect the output data and use the reset function")
 

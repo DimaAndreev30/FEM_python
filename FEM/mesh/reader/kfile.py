@@ -67,7 +67,7 @@ class KFileReader(StreamReaderBase):
                 self._isEnd = True
                 self._apply = self._end_reader
             else:
-                self._logger.warning(ParseWarning(f"Skipping '{line}' block"))
+                self._logger.info(f"Skipping '{line}' block")
                 self._apply = self.__skipping
         else:
             raise TypeError(f"Unexpected statement '{line}'")
