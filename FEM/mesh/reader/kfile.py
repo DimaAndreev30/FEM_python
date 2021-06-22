@@ -37,7 +37,10 @@ class KFileReader(StreamReaderBase):
         self._apply = self.__block_reader
         
     def _extract(self):
-        return self.__nodes, self.__cells, self.__S, self.__trS
+        return {'nodes' : self.__nodes, 
+                'cells' : self.__cells, 
+                'S'     : self.__S, 
+                'trS'   : self.__trS}
     
     
     def __skipSpaceDecarator(reader):
