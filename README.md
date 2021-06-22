@@ -8,6 +8,6 @@
  - Реализация расчетов для линейной теории упругости
 
 ##### Пример расчетов:
-см. ноутбук 'examples.ipynb'
+см. ноутбук 'doc/examples.ipynb'
 
-NONE
+![Alt text](https://github.com/DimaAndreev30/FEM_python/blob/master/doc/example.png)
