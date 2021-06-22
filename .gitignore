@@ -5,3 +5,6 @@ __pycache__/
 
 # Jupyterlab checkpoints
 .ipynb_checkpoints/
+
+# pytest cache
+.pytest_cache
