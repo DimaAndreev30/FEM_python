@@ -1,0 +1,15 @@
+# Код для генерации геометрии в CAO-Fidesys
+
+
+create surface rectangle width 18 height 6 zplane 
+create surface circle radius 0.5 zplane 
+subtract surface 2 from surface 1
+
+
+create vertex 0 0 0 
+create vertex 9 0 0 
+create vertex 9 3 0 
+create vertex 0 3 0 
+create surface vertex 1 2 3 4 
+create surface circle radius 0.5 zplane 
+subtract surface 2 from surface 1 
