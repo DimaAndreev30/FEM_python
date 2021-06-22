@@ -23,8 +23,6 @@ class TestKFileReader:
 
     def test_regularRead(self):
         reader = KFileReader()
-
-        try:
-            reader.readstream(open('doc/meshes/test.k'))
-        except TypeError:
-            assert False, "catch an exception during reading"
+        
+        reader.readstream(open('doc/meshes/test.k'))
+        reader.pop()
