@@ -84,41 +84,37 @@ class MeshClass:
         self.M = self.cells.shape[0]
         
         
-        self._coords = self.nodes[self.cells]
-        self._centers = None
-        self._maxDiff = None
-        self._neighbours = None
+        self.coords = None
+        self.centers = None
+        self.maxDiff = None
+        self.neighbours = None
+        self.matrixS = None
+        
+        self.computeCoords()
         
         self._vizualizedNodes = self.nodes
         
         
     # Дополнительные данные о сетке:
         
-    @property
-    def coords(self):
-        if self._coords is None:
-            self._coords = self.nodes[self.cells]
+    def computeCoords(self):
+        if self.coords is None:
+            self.coords = self.nodes[self.cells]
         
-        return self._coords
-        
-    @property
-    def centers(self):
-        if self._centers is None:
-            self._centers = getCenter(self.coords)
-        
-        return self._centers
-        
-    @property
-    def maxDiff(self):
-        if self._maxDiff is None:
-            self._maxDiff = np.abs(
+    def computeCenters(self):
+        if self.centers is None:
+            self.computeCoords()
+            self.centers = getCenter(self.coords)
+    
+    def computeMaxDiff(self):
+        if self.maxDiff is None:
+            self.computeCenters()
+            self.maxDiff = np.abs(
                 self.centers[:, np.newaxis, :] - self.coords
             ).max(axis=(0, 1))
-        return self._maxDiff
         
-    @property
-    def neighbours(self):
-        if self._neighbours is None:
+    def computeNeighbours(self):
+        if self.neighbours is None:
             nodes_to_cells = [[] for _ in range(self.N)]
             for cell_id, cell in enumerate(self.cells):
                 nodes_to_cells[cell[0]].append([0, cell_id])
@@ -127,21 +123,18 @@ class MeshClass:
                 nodes_to_cells[cell[3]].append([-1, cell_id])
             
             self.NEIGHNONE = self.M
-            self._neighbours = np.full_like(self.cells, self.NEIGHNONE, dtype=np.int32)
+            self.neighbours = np.full_like(self.cells, self.NEIGHNONE, dtype=np.int32)
             for node_to_cells in nodes_to_cells:
                 for (ind1, cell_id1), (ind2, cell_id2) \
                 in combinations(node_to_cells, 2):
                     if self.cells[cell_id1, ind1 + 1] == \
                        self.cells[cell_id2, ind2 - 1]:
-                        self._neighbours[cell_id1, ind1]     = cell_id2
-                        self._neighbours[cell_id2, ind2 - 1] = cell_id1
-            
-        return self._neighbours
+                        self.neighbours[cell_id1, ind1]     = cell_id2
+                        self.neighbours[cell_id2, ind2 - 1] = cell_id1
         
-    @property
-    def matrixS(self):
-        if self._matrixS is None:
-            self._matrixS = np.zeros(shape=(self.N, self.N), dtype=np.double)
+    def computeMatrixS(self):
+        if self.matrixS is None:
+            self.matrixS = np.zeros(shape=(self.N, self.N), dtype=np.double)
             k = np.array([[2.0, 1.0, 0.5, 1.0], 
                           [1.0, 2.0, 1.0, 0.5], 
                           [0.5, 1.0, 2.0, 1.0], 
@@ -149,9 +142,7 @@ class MeshClass:
             for cell, S, trS in zip(self.cells, self.S, self.trS):
                 S_loc = k*(S + trS[:, np.newaxis] + trS[np.newaxis, :])
                 for i in range(4):
-                    self._matrixS[cell, cell[i]] += S_loc[i]
-            
-        return self._matrixS
+                    self.matrixS[cell, cell[i]] += S_loc[i]
         
         
     def getTriangleRel(self, a, cell_id):

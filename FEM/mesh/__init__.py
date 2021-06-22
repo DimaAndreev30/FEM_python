@@ -4,4 +4,6 @@
 
 
 from .mesh import *
+from . import reader
 from . import plot
+from . import search
